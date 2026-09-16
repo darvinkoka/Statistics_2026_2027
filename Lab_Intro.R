@@ -46,7 +46,7 @@
 #       - After selecting R Console window, click on 'Session' and then 
 #         'Set working directory'...'
 #       - Use the command 'setwd'
-setwd('C:/Users/giuli/Desktop/Statistics 2025/Lab 1')
+setwd('/Users/darvinkoka/Documents/PhD/DIDATTICA/Statistics_2026_2027')
 ### for Windows user: pay attention to / and \ in the copy and paste!!!! ###
 
 
