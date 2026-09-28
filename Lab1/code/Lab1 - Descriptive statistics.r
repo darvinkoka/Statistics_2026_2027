@@ -161,7 +161,7 @@ Gender_abs[Gender_abs==max(Gender_abs)]
 #### Analysis of the quantitative variable Height ####
 
 # Compute the main location and dispersion parameters
-mean(Height) # Mean
+mean(Height) # sample mean
 var(Height) # Unbiased sample variance
 sd(Height) # Unbiased sample standard deviation
 min(Height) # Minimum
@@ -180,7 +180,7 @@ summary(Height)
 
 # Histogram
 
-hist(Height,10,main='Histogram Height') 
+hist(Height,15,main='Histogram Height') 
 hist(Height,main='Histogram Height',prob=TRUE) 
 
 # We can specify the number of breaks (classes+1), using the argument 'breaks' 
@@ -206,6 +206,8 @@ boxplot(Height,ylab='Height',main='Boxplot Height')
 
 # To get the outliers
 boxplot(Height,plot=FALSE)$out
+h <- Height[-boxplot(Height,plot=FALSE)$out]
+
 graphics.off()
 
 #### Comparing the groups of male and female ####
@@ -227,9 +229,11 @@ summary(Height[Gender=="1"])
 graphics.off()
 quartz()
 boxplot(Haircut~Gender,col=c('slateblue','plum2'),names=c('Males','Females'),main="Haircut - Males and females")
+#tilde in Windows is Alt+126
 
 # Compute the main location and dispersion parameters
 Haircut_male=Haircut[which(Gender=='0')]
+Haircut_male=Haircut[Gender=='0']
 Haircut_female=Haircut[which(Gender=='1')]
 
 summary(Haircut_male)
