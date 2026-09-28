@@ -1,0 +1,344 @@
+
+###############################################
+##                  STATISTICS               ##
+## Bioinformatics and Computational Genomics ##
+###############################################
+
+###############################################
+#                LABORATORY 1                 #
+#          DESCRIPTIVE STATISTICS             #
+###############################################
+rm(list = ls())
+graphics.off()
+getwd()
+setwd('/Users/darvinkoka/Documents/PhD/DIDATTICA/Statistics_2026_2027/Lab1')
+
+########################
+## Data Import/Export ##  
+########################
+
+# Import the file "record.txt"
+record <- read.table('data/record.txt', header=T)
+
+# Dimensions and variables names
+dim(record)
+dimnames(record)
+
+# Show the first lines
+head(record)
+str(record)
+record[1:5,]
+
+# View the database in table format
+View(record)   # using RStudio, you can also click on the name of the database in the "Environment" window
+
+
+# Name rows using labels contained in the 8th column
+record <- data.frame(record[,1:7], row.names=record[,8]) 
+
+# Name columns
+var.names <- c("m100","m200","m400","m800","m1500","m3000","Marathon")
+dimnames(record)[[2]] <- var.names
+
+head(record)
+
+# Save the modified version
+write.table(record, file = 'results/record_mod.csv',sep = ";")
+
+# Read the saved files
+record <- read.table('results/record_mod.csv', header=T)
+record <- read.table('results/record_mod.csv', header=T, sep = ";")
+
+
+# - "header=TRUE" specifies that the first line of the file contains column titles
+# - if needed, sep="\t" indicates that different entries are divided by a tabular
+# - if needed, dec="," indicates that the comma is used to define decimals
+
+
+##########################
+# DESCRIPTIVE STATISTICS #
+##########################
+
+
+# Categorical (or qualitative) variables: 
+#              qualitative variables take on values in one of K diﬀerent classes,
+#              or categories. 
+#              Examples of qualitative class
+#              variables include a person’s gender (male or female), the brand of product 
+#              purchased (brand A, B, or C), whether a person defaults on a debt
+#              (yes or no), or a cancer diagnosis (Acute Myelogenous Leukemia, 
+#              Acute Lymphoblastic Leukemia, or No Leukemia)
+
+
+#              We can summarize the information with a table of absolute/relative frequency 
+#              for each category, and we can represent them with bar plots and pie charts 
+
+# Quantitative variables:
+#              Quantitative variables take on numerical values.
+#.             Examples include a person’s age, height, or income, the value of a house,
+#              and the price of a stock.
+
+
+#              We can summarize them using location and dispersion parameters 
+#              (e.g. mean and standard deviation), and graphically with histograms and boxplots 
+
+#The two definitions/examples above come from:
+# James, G., Witten, D., Hastie, T., & Tibshirani, R. (2021).
+# An Introduction to Statistical Learning: With Applications in R (2nd ed.).
+# Springer. Section 2.1.5.
+
+##############
+# EXERCISE 1 #
+##############
+
+# Analysis of the data in 'studentdata.txt', 
+# that contains answers to a sheet of questions given to a large number of students in statistics classes
+# 559 observations of 10 variables:
+# Height:     height in cm
+# Gender:     gender 1=female 0=male
+# Shoes:      number of pairs of shoes owned
+# Number:     number chosen between 1 and 10
+# Dvds:       number of movie dvds owned
+# ToSleep:    time the person went to sleep the previous night (hours past midnight)
+# WakeUp:     time the person woke up the next morning
+# Haircut:    cost of last haircut including tip
+# Job:        number of hours working on a job per week
+# Drink:      usual drink at suppertime among milk, water, and pop
+
+# To import data in R we use the command 'read.table' 
+studentdata=read.table("data/studentdata.txt",header=TRUE)
+
+# Look at the first rows of the dataset...
+head(studentdata)
+
+# How many observations and variables does the dataset contain?
+dim(studentdata)
+
+# What kind of variables are there in our dataframe?
+# Which are the categorical variables and which are the quantitative ones?
+str(studentdata)
+
+# Tell R that the variable Gender is a categorical variable: 
+studentdata$Gender=as.factor(studentdata$Gender)
+str(studentdata)
+
+# Let access the dataframe
+attach(studentdata)
+
+
+#### Analysis of the categorical variable Gender ####
+
+# If you want to personalize the graphs by choosing particular colors: 
+# https://www.stat.auckland.ac.nz/~ihaka/downloads/R-colours-a4.pdf
+
+# Barplot (absolute frequencies)
+quartz()
+plot(Gender,col=c('slateblue','plum2'),
+     xlab='Gender',
+     ylab='Absolute frequencies',
+     main='Barplot Gender')
+graphics.off()
+# Absolute frequencies table
+Gender_abs <- table(Gender) 
+Gender_abs
+
+# Relative frequencies table
+Gender_rel <- prop.table(Gender_abs)
+Gender_rel
+
+# Barplot (relative frequencies)
+quartz()
+barplot(Gender_rel,col=c('slateblue','plum2'),xlab='Gender',ylab='Relative frequencies',main='Barplot Gender')
+graphics.off()
+# Pie chart
+
+pie(Gender_rel,col=c('slateblue','plum2'),labels=c('Male','Female'),main='Pie chart Gender') 
+
+graphics.off()
+# Compute the mode (most frequent item)
+Gender_abs[Gender_abs==max(Gender_abs)]
+
+#### Analysis of the quantitative variable Height ####
+
+# Compute the main location and dispersion parameters
+mean(Height) # Mean
+var(Height) # Unbiased sample variance
+sd(Height) # Unbiased sample standard deviation
+min(Height) # Minimum
+max(Height) # Maximum
+median(Height) # Median
+# Median and mean are very similar -> probably the distribution is symmetric
+
+# Quantile of order alpha:
+# Point q_alpha such that P(X<=q_alpha)=alpha
+quantile(Height,0.25) # First quartile Q1 (25th percentile of observations)
+quantile(Height,0.50) # Second quartile Q2 (50th percentile of observations, the median)
+quantile(Height,0.75) # Third quartile Q3 (75th percentile of observations)
+
+# In a single command...
+summary(Height)
+
+# Histogram
+
+hist(Height,10,main='Histogram Height') 
+hist(Height,main='Histogram Height',prob=TRUE) 
+
+# We can specify the number of breaks (classes+1), using the argument 'breaks' 
+quartz()
+par(mfrow=c(4,1)) # Four plots in the same graphics device
+hist(Height,main='Histogram Height',prob=TRUE,breaks=3)
+hist(Height,main='Histogram Height',prob=TRUE,breaks=6)
+hist(Height,main='Histogram Height',prob=TRUE,breaks=12)
+hist(Height,main='Histogram Height',prob=TRUE,breaks=24)
+graphics.off()
+# R doesn't always follow our choice exactly... but we can specify the breaks exactly
+quartz()
+par(mfrow=c(2,2))
+hist(Height,main='Histogram Height',prob=TRUE,breaks=seq(min(Height),max(Height),length.out=3))
+hist(Height,main='Histogram Height',prob=TRUE,breaks=seq(min(Height),max(Height),length.out=5))
+hist(Height,main='Histogram Height',prob=TRUE,breaks=c(150,160,165,190,203))
+hist(Height,main='Histogram Height',prob=TRUE,breaks=c(150,155,170,175,190,195,203))
+graphics.off()
+# Boxplot
+quartz()
+boxplot(Height,ylab='Height',main='Boxplot Height')
+
+
+# To get the outliers
+boxplot(Height,plot=FALSE)$out
+graphics.off()
+
+#### Comparing the groups of male and female ####
+# Are males higher than females?
+
+# Histograms, divided in groups
+quartz()
+par(mfrow=c(2,1))
+hist(Height[Gender=='0'],prob=TRUE,xlab='Height',main='Histogram Males',
+     col='slateblue',xlim=range(Height),ylim=c(0,0.06),breaks=seq(150,210,by=5))
+hist(Height[Gender=='1'],prob=TRUE,xlab='Height',main='Histogram Females',
+     col='plum2',xlim=range(Height),ylim=c(0,0.06),breaks=seq(150,210,by=5))
+
+
+summary(Height[Gender=="0"])
+summary(Height[Gender=="1"])
+# Who spends more money to cut hair between men and women?
+# Boxplot, divided in groups
+graphics.off()
+quartz()
+boxplot(Haircut~Gender,col=c('slateblue','plum2'),names=c('Males','Females'),main="Haircut - Males and females")
+
+# Compute the main location and dispersion parameters
+Haircut_male=Haircut[which(Gender=='0')]
+Haircut_female=Haircut[which(Gender=='1')]
+
+summary(Haircut_male)
+summary(Haircut_female)
+
+#### Studing relationships between variables ####
+# Is the length of sleep for a student related to the time at which he or she goes to bed?
+Hours_of_sleep=WakeUp-ToSleep
+studentdata=cbind(studentdata,Hours_of_sleep)
+head(studentdata)
+
+# Scatterplot of ToSleep versus Hours_of_sleep
+quartz()
+plot(ToSleep,Hours_of_sleep,xlab='Time at which the student goes to bed',
+     ylab='Length of sleep',main="Scatterplot of Hours_of_sleep against ToSleep")
+
+# Correlation between ToSleep and Hours_of_sleep
+ cor(ToSleep,Hours_of_sleep)
+
+detach(studentdata)
+
+  ##############
+  # EXERCISE 2 #
+  ##############
+  
+  # Descriptive analysis of the categorical variable in file 'patients_registry.txt', 
+  # that contains data about patients with heart attack
+  # 3 variables:
+  # HOSPITAL:        ID of the hospital where the patient arrives
+  # TIME_TO_SURGERY: time (min) between the onset of the heart attack and the surgery
+  # VEHICLE:         vehicle used to reach the hospital
+  #                  CAR:       private car
+  #                  FLYCAR:    ambulance emergency response vehicle
+  #                  AMBULANCE: ambulance
+  #                  TRANSFER:  programmed transfer from a different hospital
+  
+  # How many patients do we have?
+  # How many patients used their private car to reach the hospital?
+  # For how many patients we don't know the vehicle used? (tip: use command 'is.na')
+  # Describe the variable VEHICLE using graphics
+  # Which is the mode of the variable VEHICLE?
+  
+  # NOTE: there are some missing values (NA) in the data
+  
+  patients=read.table('data/patients_registry.txt',header=TRUE)
+  
+  attach(patients)
+ 
+ head(patients)
+  
+  dim(patients)
+  length(which(VEHICLE=="CAR"))
+  is.na(VEHICLE)
+  sum(is.na(VEHICLE))
+  
+  #barplot
+  
+  quartz()
+  plot(VEHICLE, xlab="vehicle", ylab="Absolute frequencies", main= "Barplot for vehicles") 
+  class(VEHICLE)
+  # Error: vehicle is a vector of characters, but characters have infinite possible values. If you convert 
+  # it in factor, then the unique possible values are "CAR", "FLYCAR", "AMBULANCE" and "VEHICLE".
+  plot(as.factor(VEHICLE), xlab="vehicle", ylab="Absolute frequencies", main= "Barplot for vehicles")
+  graphics.off()
+  #Tables
+  
+  vehicle_abs <- table(VEHICLE)
+  vehicle_abs
+  
+  vehicle_rel <- prop.table(vehicle_abs)
+  
+  # Barplot (relative frequencies)
+  quartz()
+  barplot(vehicle_rel,xlab='Vehicle',ylab='Relative frequencies',main='Barplot VEHICLE')
+  graphics.off()
+  # Pie chart
+  quartz()
+  pie(vehicle_rel,col=rainbow(length(vehicle_rel)),main='Pie chart VEHICLE') 
+  graphics.off()
+  #Mode
+  mode <- vehicle_abs[vehicle_abs==max(vehicle_abs)]
+  mode
+  
+  
+  ##############
+  # EXERCISE 3 #
+  ##############
+  
+  # Descriptive analysis of the quantitative data in file 'temperature.txt'. 
+  # 130 observations of 3 variables
+  # Temperature: body temperature (Fahrenheit degrees)
+  # Sex:         M=man, W=woman
+  # HeartBeats:  pulses for minute 
+  
+  # Is the distribution of the temperature symmetric?
+  # Are there any outliers?
+  # Are there any differences between the temperature in men and women?
+  
+  # NOTE: decimal points are here indicated with a comma, so we must use the argument 'dec=',''
+  #       when we import the dataset
+  
+  
+  temp <- read.table('data/temperature.txt',header=TRUE,dec=',')
+  attach(temp)
+   
+  
+  quartz()
+  hist(Temperature)
+  summary(Temperature)
+  boxplot(Temperature~as.factor(Sex))
+
+  
