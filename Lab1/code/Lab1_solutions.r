@@ -33,7 +33,7 @@
 
 # NOTE: there are some missing values (NA) in the data
 
-patients=read.table('patients_registry.txt', header=TRUE)
+patients=read.table('data/patients_registry.txt', header=TRUE)
 
 head(patients)
 dim(patients)
@@ -92,7 +92,7 @@ detach(patients)
 #       when we import the dataset
 
 
-temp <- read.table('temperature.txt',header=TRUE,dec=',')
+temp <- read.table('data/temperature.txt',header=TRUE,dec=',')
 
 head(temp)
 dim(temp)
