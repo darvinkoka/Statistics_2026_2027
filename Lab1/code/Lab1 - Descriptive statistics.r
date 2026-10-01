@@ -204,9 +204,9 @@ quartz()
 boxplot(Height,ylab='Height',main='Boxplot Height')
 
 
-# To get the outliers
-boxplot(Height,plot=FALSE)$out
-h <- Height[-boxplot(Height,plot=FALSE)$out]
+# get the outliers
+outliers <- boxplot(Height,plot=FALSE)$out
+Height.whithout.outliers <- Height[-which(Height==outliers)]
 
 graphics.off()
 
