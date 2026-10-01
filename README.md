@@ -4,8 +4,8 @@ In this repository you can find out the laboratory sessions
 of the course of statistics for Bioinformatics and Computational
 Engineering and Risk Engineering
 
-Prof. A.Menafoglio
-T.A. D.Koka 
+Prof. Alessandra Menafoglio
+T.A. Darvin Koka 
 
 OUTLINE:
 ____________________________________________________________________________________________
