@@ -14,7 +14,7 @@ LAB0:
 Exercise session with R. Introduction to the software R. Basics: R installation,
 set working directory, use help(). Main objects: numeric, vectors, matrices, booleans.
 Operators: sum, product, matrix product, columnwise/rowise sum and product. 
-Conditionals: If/else. Dataframe implementatio; for cycle, personal functions and debugging 
+Conditionals: If/else. Dataframe implementation; for cycle, personal functions and debugging 
 using browser()
 ____________________________________________________________________________________________
 LAB1:
